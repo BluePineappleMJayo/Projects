@@ -1,0 +1,55 @@
+#include <iostream>
+using namespace std;
+
+struct EnglishMoney
+{
+	int pound;
+	int shill;
+	int pence;
+};
+void getOldAmount(EnglishMoney&);
+EnglishMoney combineOld(EnglishMoney, EnglishMoney);
+void convertToDecimal(EnglishMoney&);
+
+int main()
+{
+	EnglishMoney a,b,c;
+	cout << "Enter first old-pound amount: ";
+	getOldAmount(a);
+	cout << "Enter second old-pound amount: ";
+	getOldAmount(b);
+	c = combineOld(a,b);
+	convertToDecimal(c);
+	cout.setf(ios::fixed);
+	cout.setf(ios::showpoint);
+	cout.precision(2);
+	cout << c.pound << "." << c.pence;
+	return 0;
+}
+void getOldAmount(EnglishMoney& a)
+{
+	char dot;
+	cin >> a.pound >> dot >> a.shill >> dot >> a.pence;
+}
+EnglishMoney combineOld(EnglishMoney a, EnglishMoney b)
+{
+	EnglishMoney temp;
+	temp.pence = a.pence + b.pence;
+	if (temp.pence > 12)
+	{
+		temp.shill = temp.pence/12;
+		temp.pence = temp.pence%12;
+	}
+	temp.shill = a.shill + b.shill + temp.shill;
+	if ( temp.shill > 20)
+	{
+		temp.pound = temp.shill/20;
+		temp.shill = temp.shill%20;
+	}
+	temp.pound= a.pound + b.pound + temp.pound;
+	return temp;
+}
+void convertToDecimal(EnglishMoney& c)
+{
+	c.pence = (((c.shill*12 + c.pence)*100))/240;
+}
